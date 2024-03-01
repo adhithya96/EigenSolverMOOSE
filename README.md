@@ -1,6 +1,6 @@
-# Static1D
-MOOSE framework for getting dispersion curves for phononic crystals
+static1d
+=====
 
-Solving problems incrementally
+Fork "static1d" to create a new MOOSE-based application.
 
-1 . 1D eigenvalue problem with bloch boundary condition.
+For more information see: [https://mooseframework.org/getting_started/new_users.html#create-an-app](https://mooseframework.org/getting_started/new_users.html#create-an-app)
