@@ -24,26 +24,25 @@ BlochDirichletBC::validParams()
   params.addParam<MooseFunctorName>(
       "coefficient", 1.0, "An optional functor coefficient to multiply the imposed functor");
   
-  params.addParam<Real>("lattice length");
-  params.declareControllable("lattice length");
-  params.addParam<Real>("wave number");
-  params.declareControllable("wave number");
-  
-
-
+  params.addParam<double>("lattice_length", 1.0, "length of the phononic lattice");
+  params.declareControllable("lattice_length");
+  params.addParam<double>("wave_number", 1.0, "wave number exp(ikx)");
+  params.declareControllable("wave_number");
 
   return params;
 }
 
 BlochDirichletBC::BlochDirichletBC(const InputParameters & parameters)
   : ADDirichletBCBaseTempl<Real>(parameters),
-    _lattice_vec(getParam<Real>("lattice length")),
-    _wave_num(getParam<Real>("wave number")),
+    _lattice_vec(getParam<double>("lattice_length")),
+    _wave_num(getParam<double>("wave_number")),
     _functor(getFunctor<ADReal>("functor")),
     _coef(getFunctor<ADReal>("coefficient"))
 {
 }
 
+// u(x + h) = u(x) * exp(ikx)
+//Translation vector  is used  to  define  the  left side of  the  boundary 
 ADReal
 BlochDirichletBC::computeQpValue()
 {
@@ -51,7 +50,8 @@ BlochDirichletBC::computeQpValue()
   const auto pl = _mesh.getPointLocator();
   //Locate node on the other side of the geometry
   //The translation vector will be a user parameter
-  const auto new_node = pl.locate_node(_current_node + _translation_vector);
+  const libMesh::Point current_point = pl->Point();
+  const auto new_node = pl->locate_node(current_point);
 
   if(!new_node)
     mooseError("Did not find the opposite side value");
@@ -61,6 +61,6 @@ BlochDirichletBC::computeQpValue()
   const Moose::StateArg time_arg = Moose::currentState();
 
   
-  return _coef(space_arg, time_arg) * _functor(space_arg, time_arg) *  _u * exp(_wave_num * _lattice_vec);
+  return _coef(space_arg, time_arg) * _functor(space_arg, time_arg) * exp(_wave_num * _lattice_vec);
 
 }

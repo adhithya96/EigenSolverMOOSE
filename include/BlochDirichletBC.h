@@ -10,7 +10,6 @@
 #pragma once
 
 #include "ADDirichletBCBaseTempl.h"
-
 /**
  * Dirichlet boundary condition with functor inputs.
  */
@@ -24,8 +23,8 @@ public:
 protected:
   virtual ADReal computeQpValue() override;
 
-  const Real & _lattice_vec;
-  const Real & _wave_num;
+  double _lattice_vec;
+  double _wave_num;
   /// The functor value to impose
   const Moose::Functor<ADReal> & _functor;
   /// Coefficient
