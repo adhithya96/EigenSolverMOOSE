@@ -9,28 +9,25 @@
 
 #pragma once
 
-#include "ADIntegratedBC.h"
-
+#include "ADDirichletBCBaseTempl.h"
 /**
- * Neumann boundary condition with functor inputs.
+ * Dirichlet boundary condition with functor inputs.
  */
-class FunctorNeumannBC : public ADIntegratedBC
+class BlochDirichletBCReal : public ADDirichletBCBaseTempl<Real>
 {
 public:
   static InputParameters validParams();
 
-  FunctorNeumannBC(const InputParameters & parameters);
+  BlochDirichletBCReal(const InputParameters & parameters);
 
 protected:
-  virtual ADReal computeQpResidual() override;
-  
+  virtual ADReal computeQpValue() override;
+
   double _lattice_vec;
   double _wave_num;
-  /// The functor to impose
+  /// The functor value to impose
   const Moose::Functor<ADReal> & _uim;
   const Moose::Functor<ADReal> & _ur;
   /// Coefficient
   const Moose::Functor<ADReal> & _coef;
-  /// Sign to apply to flux
-  const Real _sign;
 };

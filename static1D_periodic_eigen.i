@@ -22,33 +22,57 @@
 
 [Kernels]
     [diff1]
-        type = Diffusion
+        type = MatDiffusion
         variable = ur
+        diffusivity = diffusivity 
     []
     [diff2]
-        type = Diffusion
+        type = MatDiffusion
         variable = uim
+        diffusivity = diffusivity 
     []
     [eigen1]
-        type = MassEigenKernel
+        type = CoefReaction
         variable = ur
+        coefficient = -1.0
+        extra_vector_tags = 'eigen'
     []
     [eigen2]
-        type = MassEigenKernel
+        type = CoefReaction
         variable = uim
+        coefficient = -1.0
+        extra_vector_tags = 'eigen'
     []
 []
 
 [BCs]
-    [BlochU]
-        type = BlochDirichletBC
+    [Blochur]
+        type = BlochDirichletBCReal
         variable = ur
-        lattice length = 1
-        wave number = 3.14 / 2
-        translation vector = 1 0 0
+        ur = 'ur'
+        uim = 'uim'
+        lattice_length = 10.0
+        wave_number = 1.732
+        boundary = 'left'
+    []
+    [Blochuim]
+        type = BlochDirichletBCImag
+        variable = uim
+        ur = 'ur'
+        uim = 'uim'
+        lattice_length = 10
+        wave_number = 1.732
+        boundary ='left'
     []
 []
 
+[Materials]
+    [nm]
+      type = GenericConstantMaterial
+      prop_names = 'diffusivity'
+      prop_values = 0.333333333333333333
+    []
+[]
 
 [Constraints]
 
