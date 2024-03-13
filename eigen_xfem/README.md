@@ -1,0 +1,6 @@
+eigen_xfem
+=====
+
+Fork "eigen_xfem" to create a new MOOSE-based application.
+
+For more information see: [https://mooseframework.org/getting_started/new_users.html#create-an-app](https://mooseframework.org/getting_started/new_users.html#create-an-app)
