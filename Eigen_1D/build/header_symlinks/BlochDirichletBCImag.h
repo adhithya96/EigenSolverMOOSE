@@ -1,1 +1,0 @@
-/home/adhithyar/Documents/Project/static1d/include/BlochDirichletBCImag.h
