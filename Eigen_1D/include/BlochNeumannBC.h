@@ -7,13 +7,13 @@
 //* Licensed under LGPL 2.1, please see LICENSE for details
 //* https://www.gnu.org/licenses/lgpl-2.1.html
 
-#pragma once
+/*#pragma once
 
 #include "ADIntegratedBC.h"
 
-/**
- * Neumann boundary condition with functor inputs.
- */
+
+//Neumann boundary condition with functor inputs.
+ 
 class FunctorNeumannBC : public ADIntegratedBC
 {
 public:
@@ -33,4 +33,4 @@ protected:
   const Moose::Functor<ADReal> & _coef;
   /// Sign to apply to flux
   const Real _sign;
-};
+};*/
