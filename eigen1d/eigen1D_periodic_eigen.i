@@ -53,7 +53,7 @@
         uim = 'uim'
         lattice_length = 10.0
         wave_number = 1.732
-        boundary = 'left'
+        boundary = 'right'
     []
     [Blochuim]
         type = BlochDirichletBCImag
@@ -62,7 +62,7 @@
         uim = 'uim'
         lattice_length = 10
         wave_number = 1.732
-        boundary ='left'
+        boundary ='right'
     []
 []
 
@@ -70,22 +70,19 @@
     [nm]
       type = GenericConstantMaterial
       prop_names = 'diffusivity'
-      prop_values = 0.333333333333333333
+      prop_values = 333.333333333333333
     []
 []
 
-[Constraints]
-
+[Problem]
+    type = EigenProblem
+    error_on_jacobian_nonzero_reallocation = false
 []
-  
+
 [Executioner]
     type = Eigenvalue
-    eigen_problem_type = gen_non_hermitian
-    which_eigen_pairs = SMALLEST_MAGNITUDE
-    n_eigen_pairs = 5
-    n_basis_vectors = 18
-    solve_type = jacobi_davidson
-    petsc_options = '-eps_view'
+    solve_type = arnoldi
+    n_eigen_pairs = 4
 []
   
 [Outputs]

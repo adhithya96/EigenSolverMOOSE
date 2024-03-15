@@ -53,7 +53,7 @@ BlochDirichletBCImag::computeQpValue()
   //Locate node on the other side of the geometry
   //The translation vector will be a user parameter
   libMesh::Point _translation_vec= libMesh::Point(_lattice_vec, 0.0, 0.0);
-  const auto new_node = pl->locate_node(*_current_node + _translation_vec);
+  const auto new_node = pl->locate_node(*_current_node - _translation_vec);
 
 
   if(!new_node)

@@ -1,0 +1,6 @@
+Applications:
+    eigen1d:
+        app_types:
+            - eigen1dApp
+        content_directory: ${ROOT_DIR}/doc/content
+        log_default: WARNING
