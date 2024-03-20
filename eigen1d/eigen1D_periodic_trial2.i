@@ -1,3 +1,7 @@
+[GlobalParams]
+    displacements = 'ur uim'
+[]  
+
 [Mesh]
     [First]
         type = GeneratedMeshGenerator
@@ -20,17 +24,16 @@
     []
 []
 
+[Modules/TensorMechanics/Master]
+    [./all]
+      strain = SMALL
+      planar_formulation = PLANE_STRAIN
+      add_variables = true
+      generate_output = 'stress_xx stress_xy stress_yy stress_zz strain_xx strain_xy strain_yy strain_zz'
+    [../]
+[]
+
 [Kernels]
-    [diff1]
-        type = MatDiffusion
-        variable = ur
-        diffusivity = diffusivity 
-    []
-    [diff2]
-        type = MatDiffusion
-        variable = uim
-        diffusivity = diffusivity 
-    []
     [eigen1]
         type = CoefReaction
         variable = ur
@@ -52,7 +55,6 @@
         ur = 'ur'
         uim = 'uim'
         lattice_length = 10.0
-        coefficient = 1.0
         wave_number = 1.0
         boundary = 'right'
     []
@@ -62,18 +64,20 @@
         ur = 'ur'
         uim = 'uim'
         lattice_length = 10.0
-        coefficient  =  1.0
         wave_number = 1.0
         boundary ='right'
     []
 []
 
 [Materials]
-    [nm]
-      type = GenericConstantMaterial
-      prop_names = 'diffusivity'
-      prop_values = 0
-    []
+    [./linear_stress]
+        type = ComputeLinearElasticStress
+    [../]
+    [./elasticity_tensor]
+        type = ComputeIsotropicElasticityTensor
+        poissons_ratio = 0.3
+        youngs_modulus = 1e6
+    [../]
 []
 
 [Problem]
@@ -83,7 +87,7 @@
 
 [Executioner]
     type = Eigenvalue
-    solve_type = krylovschur
+    solve_type = lanczos
     n_eigen_pairs = 4
     [./Quadrature]
         type = GAUSS_LOBATTO

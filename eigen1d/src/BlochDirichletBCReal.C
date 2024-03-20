@@ -25,10 +25,10 @@ BlochDirichletBCReal::validParams()
   params.addParam<MooseFunctorName>(
       "coefficient", 1.0, "An optional functor coefficient to multiply the imposed functor");
   
-  params.addParam<double>("lattice_length", 1.0, "length of the phononic lattice");
-  params.declareControllable("lattice_length");
-  params.addParam<double>("wave_number", 1.0, "wave number exp(ikx)");
-  params.declareControllable("wave_number");
+  params.addRequiredParam<double>("lattice_length", 1.0, "length of the phononic lattice");
+  //params.declareControllable("lattice_length");
+  params.addRequiredParam<double>("wave_number", 1.0, "wave number exp(ikx)");
+  //params.declareControllable("wave_number");
 
   return params;
 }
