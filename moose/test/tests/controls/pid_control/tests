@@ -1,0 +1,56 @@
+[Tests]
+  [pid]
+    requirement = "The Control system shall be able to control an input parameter to make a postprocessor match a target value,"
+    issues = '#17271'
+    design = 'syntax/Controls/index.md source/controls/PIDTransientControl.md'
+    [basic]
+      type = 'CSVDiff'
+      input = 'pid_control.i'
+      csvdiff = 'out.csv'
+      recover = false
+      # Not outputting left_boundary_average to avoid regold
+      cli_args = 'Postprocessors/left_boundary_average/outputs=none'
+      detail = 'using the principle of Proportional Integral Derivative control,'
+    []
+    [min_max_limits]
+      type = 'CSVDiff'
+      input = 'pid_control.i'
+      csvdiff = 'min_max_limits.csv'
+      recover = false
+      cli_args = 'Outputs/file_base=min_max_limits Controls/integral_value/maximum_output_value=4.0 Controls/integral_value/minimum_output_value=2.0 Executioner/nl_abs_tol=1e-12 Executioner/end_time=10'
+      detail = 'allowing the Proportional Integral Derivative control to have limits for its maximum and minimum output,'
+    []    
+    [basic_postprocessor]
+      type = 'CSVDiff'
+      input = 'pid_pp_control.i'
+      csvdiff = 'pp_out.csv'
+      recover = false
+      cli_args = "Outputs/file_base=pp_out"
+      detail = 'using a input postprocessor in lieu of an input parameter,'
+    []
+    [windup]
+      type = 'CSVDiff'
+      input = 'pid_control.i'
+      csvdiff = 'windup_out.csv'
+      recover = false
+      # Not outputting left_boundary_average to avoid regold
+      cli_args = 'Outputs/file_base=windup_out Controls/integral_value/reset_integral_windup=true Postprocessors/left_boundary_average/outputs=none'
+      detail = 'with integral windup control, resetting the integral term if the error crosses zero,'
+    []
+    [picard]
+      type = 'CSVDiff'
+      input = 'pid_pp_control.i'
+      csvdiff = 'picard_out.csv'
+      cli_args = "Outputs/file_base=picard_out Controls/integral_value/reset_every_timestep=true MultiApps/inactive=''"
+      detail = 'keeping the PID process within a single timestep,'
+    []
+    [resistance_to_solver_fails]
+      type = 'CSVDiff'
+      input = 'pid_pp_control.i'
+      recover = false
+      csvdiff = 'picard_resets_out.csv'
+      cli_args = "--no-trap-fpe Outputs/file_base=picard_resets_out MultiApps/inactive='' Controls/inactive='' Kernels/inactive='' Controls/integral_value/execute_on=timestep_begin"
+      detail = 'and resetting the PID process correctly if the solver fails during a Picard/coupling iteration.'
+    []
+  []
+[]

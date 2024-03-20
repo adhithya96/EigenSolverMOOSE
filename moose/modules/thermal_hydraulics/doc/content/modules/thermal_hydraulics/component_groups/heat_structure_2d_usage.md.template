@@ -1,0 +1,23 @@
+The parameters
+[!param](/Components/{{name}}/names),
+[!param](/Components/{{name}}/widths), and
+[!param](/Components/{{name}}/n_part_elems) are discussed in [#mesh_radial].
+
+There are two options for specification of the thermal properties on the heat structure:
+
+- Create a [SolidProperties](syntax/SolidProperties/index.md) object for each unique heat structure material,
+  and then provide [!param](/Components/{{name}}/solid_properties) which corresponds 
+  to the `SolidProperties` object to use in each transverse region  (each entry corresponds 
+  to the equally indexed entry in [!param](/Components/{{name}}/names))
+  and [!param](/Components/{{name}}/solid_properties_T_ref), which provides
+  the temperatures at which to evaluate the densities, since a constant density
+  is to be used in each region, due to heat structures having a non-deformable
+  mesh.
+- Create [Materials](Materials/index.md) object(s) supplying the following material properties
+  on all blocks (see [#mesh_blocks]) of the heat structure mesh:
+
+  | Material Property | Symbol | Description |
+  | :- | :- | :- |
+  | `density` | $\rho$ | Density \[kg/m$^3$\] |
+  | `specific_heat` | $c_p$ | Specific heat capacity \[J/(kg-K)\] |
+  | `thermal_conductivity` | $k$ | Thermal conductivity \[W/(m-K)\] |

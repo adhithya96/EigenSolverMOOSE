@@ -1,0 +1,32 @@
+[Tests]
+  issues = '#16809'
+  design = 'navier_stokes/wcnsfv.md'
+  [transient]
+    type = 'Exodiff'
+    input = 2d-transient.i
+    exodiff = 2d-transient_out.e
+    method = "!dbg"
+    requirement = 'The system shall be able to use realistic fluid properties in a weakly compressible flow simulation'
+    rel_err = 7e-5
+    # The non-linear tolerance is actually fairly tight, but the variable values
+    # are small at the no-slip boundary conditions, and this leads to absolute diffs of around 1e-15,
+    # triggering the default relative tolerance error criterion
+    valgrind = HEAVY
+  []
+  [fluidprops]
+    type = 'Exodiff'
+    input = functorfluidprops.i
+    exodiff = functorfluidprops_out.e
+    requirement = 'The system shall be able to output grandeurs, derivatives and non-dimensional quantities from realistic functor fluid properties'
+    recover = false
+  []
+  [neglect_drho_dt_derivatives]
+    type = 'Exodiff'
+    input = functorfluidprops.i
+    exodiff = functorfluidprops_out.e
+    cli_args = 'FunctorMaterials/fluid_props_to_mat_props/neglect_derivatives_of_density_time_derivative=true'
+    requirement = 'The system shall be able to neglect the derivatives with regards to nonlinear variables of the density first order time derivative.'
+    recover = false
+    prereq = 'fluidprops'
+  []
+[]
