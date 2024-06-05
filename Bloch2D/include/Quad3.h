@@ -2,7 +2,7 @@
 
 #include "Quad.h"
 
-class Quad2 : public Material
+class Quad3 : public Material
 {
 protected:
     int nnode, nelem, nen, ndof, ngp, order;
@@ -11,8 +11,8 @@ protected:
     Eigen::MatrixXd Ke, Me;
     
 public:
-    Quad2(const int nelex, const int neley, const double lx, const double ly);
-    Quad2(std::string fname);
+    Quad3(const int nelex, const int neley, const double lx, const double ly);
+    Quad3(std::string fname);
     int get_order();
     int get_nnode();
     int get_nelem();

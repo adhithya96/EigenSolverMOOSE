@@ -1,10 +1,10 @@
 
-#include "../include/Quad2.h"
+#include "../include/Quad3.h"
 //For higher order elements Gauss Lobatto points are used 
 //This includes all the nodal points in the isoparametric element.
 
 
-Eigen::VectorXd Quad2::get_coordinates(int nodenum)
+Eigen::VectorXd Quad3::get_coordinates(int nodenum)
 {
     Eigen::VectorXd coord(2);
     coord(0) = node(nodenum, 0);
@@ -13,12 +13,12 @@ Eigen::VectorXd Quad2::get_coordinates(int nodenum)
     return coord;
 }
 
-int Quad2::get_order()
+int Quad3::get_order()
 {
     return order;
 }
 
-Eigen::VectorXd Quad2::get_connectivity(int elenum)
+Eigen::VectorXd Quad3::get_connectivity(int elenum)
 {
     Eigen::VectorXd ele(get_nen());
     for(int i = 0; i < get_nen(); i++)
@@ -27,18 +27,18 @@ Eigen::VectorXd Quad2::get_connectivity(int elenum)
     return ele;
 }
 
-Quad2::Quad2(const int nelex, const int neley, const double lx, const double ly)
+Quad3::Quad3(const int nelex, const int neley, const double lx, const double ly)
 {
-    const double dx = lx / (2 * nelex);
-    const double dy = ly / (2 * neley);
-    int nnodex = 2 * nelex + 1;
-    int nnodey = 2 * neley + 1;
+    const double dx = lx / (3 * nelex);
+    const double dy = ly / (3 * neley);
+    int nnodex = 3 * nelex + 1;
+    int nnodey = 3 * neley + 1;
     nnode = nnodex * nnodey;
     nelem = nelex * neley;
-    nen = 9;
+    nen = 16;
     ndof = 4;
-    ngp = 9;
-    order = 2;
+    ngp = 16;
+    order = 3;
 
     node = Eigen::MatrixXd::Zero(nnode, 2);
     int count = 0;
@@ -56,20 +56,27 @@ Quad2::Quad2(const int nelex, const int neley, const double lx, const double ly)
     {
         for(int i = 0; i < nelex; i++)
         {
-            elem(i + j * nelex, 0) = 2 * j * nnodex + 2 * i;
-            elem(i + j * nelex, 1) = 2 * j * nnodex + 2 * i + 2;
-            elem(i + j * nelex, 2) = 2 * (j + 1) * nnodex + 2 * i + 2;   
-            elem(i + j * nelex, 3) = 2 * (j + 1) * nnodex + 2 * i;
-            elem(i + j * nelex, 4) = 2 * j * nnodex + 2 * i + 1;
-            elem(i + j * nelex, 5) = (2 * j + 1) * nnodex + 2 * i + 2;
-            elem(i + j * nelex, 6) = 2 * (j + 1) * nnodex + 2 * i + 1;   
-            elem(i + j * nelex, 7) = (2 * j + 1) * nnodex + 2 * i;
-            elem(i + j * nelex, 8) = (2 * j + 1) * nnodex + 2 * i + 1;
+            elem(i + j * nelex, 0) = 3 * j * nnodex + 3 * i;
+            elem(i + j * nelex, 1) = 3 * j * nnodex + 3 * i + 3;
+            elem(i + j * nelex, 2) = 3 * (j + 1) * nnodex + 3 * i + 3;   
+            elem(i + j * nelex, 3) = 3 * (j + 1) * nnodex + 3 * i;
+            elem(i + j * nelex, 4) = 3 * j * nnodex + 3 * i + 1;
+            elem(i + j * nelex, 5) = 3 * j * nnodex + 3 * i + 2;
+            elem(i + j * nelex, 6) = (3 * j + 1) * nnodex + 3 * i + 3;
+            elem(i + j * nelex, 7) = (3 * j + 2) * nnodex + 3 * i + 3;
+            elem(i + j * nelex, 8) = 3 * (j + 1) * nnodex + 3 * i + 2;
+            elem(i + j * nelex, 9) = 3 * (j + 1) * nnodex + 3 * i + 1;
+            elem(i + j * nelex, 10) = (3 * j + 2) * nnodex + 3 * i;
+            elem(i + j * nelex, 11) = (3 * j + 1) * nnodex + 3 * i;
+            elem(i + j * nelex, 12) = (3 * j + 1) * nnodex + 3 * i + 1;
+            elem(i + j * nelex, 13) = (3 * j + 1) * nnodex + 3 * i + 2;
+            elem(i + j * nelex, 14) = (3 * j + 2) * nnodex + 3 * i + 2;
+            elem(i + j * nelex, 15) = (3 * j + 2) * nnodex + 3 * i + 1;
         }
     }
 }
 
-Eigen::VectorXd Quad2::RefElementCoord(int nodenum)
+Eigen::VectorXd Quad3::RefElementCoord(int nodenum)
 {
     Eigen::VectorXd x(2);
     switch(nodenum)
@@ -91,24 +98,52 @@ Eigen::VectorXd Quad2::RefElementCoord(int nodenum)
             x(1) = 1;
             break;
         case 5:
-            x(0) = 0;
+            x(0) = -0.4472;
             x(1) = -1;
             break;
         case 6:
-            x(0) = 1;
-            x(1) = 0;
+            x(0) = 0.4472;
+            x(1) = -1;
             break;
         case 7:
-            x(0) = 0;
-            x(1) = 1;
+            x(0) = 1;
+            x(1) = -0.4472;
             break;
         case 8:
-            x(0) = -1;
-            x(1) = 0;
+            x(0) = 1;
+            x(1) = 0.4472;
             break;
         case 9:
-            x(0) = 0;
-            x(1) = 0;
+            x(0) = 0.4472;
+            x(1) = 1;
+            break;
+        case 10:
+            x(0) = -0.4472;
+            x(1) = 1;
+            break;
+        case 11:
+            x(0) = -1;
+            x(1) = 0.4472;
+            break;
+        case 12:
+            x(0) = -1;
+            x(1) = -0.4472;
+            break;
+        case 13:
+            x(0) = -0.4472;
+            x(1) = -0.4472;
+            break;
+        case 14:
+            x(0) = 0.4472;
+            x(1) = -0.4472;
+            break;
+        case 15:
+            x(0) = 0.4472;
+            x(1) = 0.4472;
+            break;
+        case 16:
+            x(0) = -0.4472;
+            x(1) = 0.4472;
             break;
         default:
             x(0) = -99;
@@ -119,95 +154,124 @@ Eigen::VectorXd Quad2::RefElementCoord(int nodenum)
     return x;
 }
 
-int Quad2::get_nen() 
+int Quad3::get_nen() 
 {
     return nen;
 
 }
 
-int Quad2::get_nnode()
+int Quad3::get_nnode()
 {
     return nnode;
 }
     
-int Quad2::get_nelem()
+int Quad3::get_nelem()
 {
     return nelem;
 }
 
-int Quad2::get_ndof()
+int Quad3::get_ndof()
 {
     return ndof;
 }
 
-int Quad2::get_ngp()
+int Quad3::get_ngp()
 {
     return ngp;
 }
 
-Eigen::VectorXd Quad2::GaussIntegrationWeights(int nodenum)
+Eigen::VectorXd Quad3::GaussIntegrationWeights(int nodenum)
 {
     Eigen::VectorXd w(2);
     switch(nodenum)
     {
         case 1: 
-            w(0) = 0.333;
-            w(1) = 0.333;
+            w(0) = 0.167;
+            w(1) = 0.167;
             break;
         case 2:
-            w(0) = 0.333;
-            w(1) = 0.333;
+            w(0) = 0.167;
+            w(1) = 0.167;
             break;
         case 3:
-            w(0) = 0.333;
-            w(1) = 0.333;
+            w(0) = 0.167;
+            w(1) = 0.167;
             break;
         case 4:
-            w(0) = 0.333;
-            w(1) = 0.333;
+            w(0) = 0.167;
+            w(1) = 0.167;
             break;
         case 5:
-            w(0) = 1.333;
-            w(1) = 0.333;
+            w(0) = 0.833;
+            w(1) = 0.167;
             break;
         case 6:
-            w(0) = 0.333;
-            w(1) = 1.333;
+            w(0) = 0.833;
+            w(1) = 0.167;
             break;
         case 7:
-            w(0) = 1.333;
-            w(1) = 0.333;
+            w(0) = 0.167;
+            w(1) = 0.833;
             break;
         case 8:
-            w(0) = 0.333;
-            w(1) = 1.333;
+            w(0) = 0.167;
+            w(1) = 0.833;
             break;
         case 9:
-            w(0) = 1.333;
-            w(1) = 1.333;
+            w(0) = 0.833;
+            w(1) = 0.167;
+            break;
+        case 10:
+            w(0) = 0.833;
+            w(1) = 0.167;
+            break;
+        case 11:
+            w(0) = 0.167;
+            w(1) = 0.833;
+            break;
+        case 12:
+            w(0) = 0.167;
+            w(1) = 0.833;
+            break;
+        case 13:
+            w(0) = 0.833;
+            w(1) = 0.833;
+            break;
+        case 14:
+            w(0) = 0.833;
+            w(1) = 0.833;
+            break;
+        case 15:
+            w(0) = 0.833;
+            w(1) = 0.833;
+            break;
+        case 16:
+            w(0) = 0.833;
+            w(1) = 0.833;
             break;
         default:
             w(0) = -99;
             w(1) = -99;
             break;
     }
+
     return w;
 }
 
 //Evaluating value of shape function at node i
-double Quad2::get_N(int i, double exi, double eta)
+double Quad3::get_N(int i, double exi, double eta)
 {
     //Get the reference  coordinates
     Eigen::VectorXd x = RefElementCoord(i);
 
 
-    Eigen::VectorXd  refx(3);
-    refx << -1,0,1;
-    Eigen::VectorXd refy(3); 
-    refy << -1, 0, 1;
+    Eigen::VectorXd  refx(4);
+    refx << -1,-0.4472,0.4472,1;
+    Eigen::VectorXd refy(4); 
+    refy << -1,-0.4472,0.4472,1;
     
     double val = 1;
-    for(int k = 0; k < 3; k++)
+    for(int k = 0; k < 4; k++)
     {
         if(refx(k) != x(0))
             val *= (exi - refx(k)) / (x(0) - refx(k));
@@ -220,21 +284,21 @@ double Quad2::get_N(int i, double exi, double eta)
 
 //dNi/dexi if j = 1 at exi and eta
 //dNi/deta if j = 2 at exi and eta
-double Quad2::get_dNdx(int i, int j, double exi, double eta)
+double Quad3::get_dNdx(int i, int j, double exi, double eta)
 {
     Eigen::VectorXd x = RefElementCoord(i);
     double exii = x(0), etaj = x(1);
 //    std::cout << "Element coordinates" << std::endl;
 //    std::cout << x << std::endl;
     //std::cout << x << std::endl;
-    Eigen::VectorXd exik(3);
-    exik << -1,0,1;
-    Eigen::VectorXd etal(3);
-    etal << -1, 0, 1;
+    Eigen::VectorXd exik(4);
+    exik << -1,-0.4472,0.4472,1;
+    Eigen::VectorXd etal(4);
+    etal << -1,-0.4472,0.4472,1;
     
     double val;
     double denexi = 1, deneta = 1, numexi = 1, numeta = 1;
-    for(int iter = 0; iter < 3; iter++)
+    for(int iter = 0; iter < 4; iter++)
     {
         if(exik(iter) != exii)
         {
@@ -256,12 +320,12 @@ double Quad2::get_dNdx(int i, int j, double exi, double eta)
     if(j == 1)
     {
         numexi = 0;
-        for(int iter =  0; iter < 3; iter++)
+        for(int iter =  0; iter < 4; iter++)
         {
             if(exik(iter) != exii)
             {
                 double temp = 1;
-                for(int iter2 = 0; iter2  < 3; iter2++)
+                for(int iter2 = 0; iter2  < 4; iter2++)
                 {
                     if((iter2 != iter)&&(exik(iter2) != exii))
                         temp *= (exi - exik(iter2));
@@ -274,12 +338,12 @@ double Quad2::get_dNdx(int i, int j, double exi, double eta)
     if(j == 2)
     {
         numeta = 0;
-        for(int iter = 0; iter < 3; iter++)
+        for(int iter = 0; iter < 4; iter++)
         {
             if(etal(iter) != etaj)
             {
                 double temp = 1;
-                for(int iter2 = 0; iter2  < 3; iter2++)
+                for(int iter2 = 0; iter2  < 4; iter2++)
                 {
                     if((iter2 != iter)&&(etal(iter2) != etaj))
                         temp *= (eta - etal(iter2));
@@ -300,7 +364,7 @@ double Quad2::get_dNdx(int i, int j, double exi, double eta)
     return val;
 }
 
-Eigen::MatrixXd Quad2::get_jacobianmat(Eigen::MatrixXd x, double exi, double eta)
+Eigen::MatrixXd Quad3::get_jacobianmat(Eigen::MatrixXd x, double exi, double eta)
 {
     Eigen::VectorXd xe(get_nen()), ye(get_nen());
     for(int i = 0; i < get_nen(); i++)
@@ -335,7 +399,7 @@ Eigen::MatrixXd Quad2::get_jacobianmat(Eigen::MatrixXd x, double exi, double eta
     return jmat;
 }
 
-Eigen::MatrixXd Quad2::get_localstiffness(Eigen::MatrixXd D, Eigen::MatrixXd node)
+Eigen::MatrixXd Quad3::get_localstiffness(Eigen::MatrixXd D, Eigen::MatrixXd node)
 {
     //gaussian points
     Eigen::VectorXd x(2);
@@ -384,7 +448,7 @@ Eigen::MatrixXd Quad2::get_localstiffness(Eigen::MatrixXd D, Eigen::MatrixXd nod
     return k;
 }
 
-Eigen::MatrixXd Quad2::get_localmass(double rho, Eigen::MatrixXd node)
+Eigen::MatrixXd Quad3::get_localmass(double rho, Eigen::MatrixXd node)
 {
     //std::cout << x << std::endl;
     Eigen::MatrixXd me = Eigen::MatrixXd::Zero(get_nen() * 2, get_nen() * 2);
@@ -422,7 +486,7 @@ Eigen::MatrixXd Quad2::get_localmass(double rho, Eigen::MatrixXd node)
 }
 
 
-Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int nnodex, int nnodey)
+Eigen::MatrixXd Quad3::get_constraintmatrix(double kx, double ky, double a, int nnodex, int nnodey)
 {
     Eigen::MatrixXd Q = Eigen::MatrixXd::Zero(get_ndof() * nnode, get_ndof() * (nnodex - 1) * (nnodey  - 1));
     int iter = 0, ndim = 2;
@@ -443,10 +507,10 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
                 int xrui = xrur +  ndim * nnodex * nnodey;
 
-                std::cout << xrur << std::endl;
-                std::cout << yrur << std::endl;
-                std::cout << yiur << std::endl;
-                std::cout << xrui << std::endl;
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
 
                 //ur
                 Q(xrur, yrur) = cos(kx * a);
@@ -461,7 +525,7 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 Q(xrui + 1, yrur + 1) = sin(kx * a);            
                 Q(xrui + 1, yiur + 1) = cos(kx * a);
 
-                std::cout << Q << std::endl;
+                //std::cout << Q << std::endl;
             }
             else if (i == nnodey - 1  && j != nnodex - 1)
             {
@@ -470,10 +534,10 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
                 int xrui = xrur +  ndim * nnodex * nnodey;
 
-                std::cout << xrur << std::endl;
-                std::cout << yrur << std::endl;
-                std::cout << yiur << std::endl;
-                std::cout << xrui << std::endl;
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
 
                 //ur
                 Q(xrur, yrur) = cos(ky * a);
@@ -495,10 +559,10 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
                 int xrui = xrur +  ndim * nnodex * nnodey;
 
-                std::cout << xrur << std::endl;
-                std::cout << yrur << std::endl;
-                std::cout << yiur << std::endl;
-                std::cout << xrui << std::endl;
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
 
                 //ur
                 Q(xrur, yrur) = cos((kx + ky) * a);
@@ -513,7 +577,7 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 Q(xrui + 1, yrur + 1) = sin((kx + ky) * a);            
                 Q(xrui + 1, yiur + 1) = cos((kx + ky) * a);
 
-                std::cout << Q << std::endl;            
+                //std::cout << Q << std::endl;            
             }
             else
             {
@@ -531,12 +595,12 @@ Eigen::MatrixXd Quad2::get_constraintmatrix(double kx, double ky, double a, int 
                 Q(xiur + 1, yiur + 1) = 1;
                 temp++;
 
-                std::cout << xrur << std::endl;
-                std::cout << yrur << std::endl;
-                std::cout << yiur << std::endl;
-                std::cout << xiur << std::endl;
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xiur << std::endl;
 
-                std::cout << Q << std::endl;
+                //std::cout << Q << std::endl;
 
             }
 

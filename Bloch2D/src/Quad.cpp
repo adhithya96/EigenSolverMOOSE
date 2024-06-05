@@ -4,6 +4,7 @@ Quad::Quad(const int nelex, const int neley, const double lx, const double ly)
 {
     nen = 4;
     ndof = 4;
+    order = 1;
     const double dx = lx / nelex;
     const double dy = ly / neley;
     nnode = (nelex + 1) * (neley + 1);
@@ -205,6 +206,11 @@ Eigen::MatrixXd Quad::get_constraintmatrix(double kx, double ky, double a, int n
     }
 
     return Q;
+}
+
+int Quad::get_order()
+{
+    return order;
 }
 
 Eigen::VectorXd Quad::get_coordinates(int nodenum)

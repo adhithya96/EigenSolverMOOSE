@@ -13,7 +13,7 @@
 class Quad : public Material
 {
 private:
-    int nnode, nelem, nen, ndof;
+    int nnode, nelem, nen, ndof, order;
     Eigen::MatrixXd node;
     Eigen::MatrixXd elem;
     Eigen::MatrixXd Ke, Me;
@@ -25,6 +25,7 @@ public:
     int get_nen();
     Eigen::VectorXd get_coordinates(int  nodenum);
     Eigen::VectorXd get_connectivity(int elenum);
+    int get_order();
     int get_nnode();
     int get_nelem();
     int get_ndof();

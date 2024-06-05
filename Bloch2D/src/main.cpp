@@ -1,8 +1,9 @@
-#pragma once 
-
 #include "../include/Quad.h"
 #include "../include/matplotlibcpp.h"
 #include "../include/Quad2.h"
+#include "../include/Quad3.h"
+#include "../include/Quad4.h"
+#include "../include/Quad5.h"
 
 namespace plt = matplotlibcpp;
 
@@ -14,7 +15,7 @@ int main()
     //Quad mesh = Quad("square_mesh_coarse.vtk");
     int nelex =  4;
     int neley = 4;
-    Quad2 mesh =  Quad2(nelex, neley, 0.04, 0.04);
+    Quad5 mesh =  Quad5(nelex, neley, 0.04, 0.04);
     std::cout << "Nodal data" << std::endl;
     std::cout << mesh.get_nnode() << std::endl;
     for(int i = 0; i < mesh.get_nnode(); i++)
@@ -115,7 +116,7 @@ int main()
             double kx = _mat.get_wavenum(1);
             double ky = _mat.get_wavenum(2);
             double a = _mat.get_latticevec();
-            Eigen::MatrixXd Q = mesh.get_constraintmatrix(kx, ky, a, nelex + 1, neley + 1);
+            Eigen::MatrixXd Q = mesh.get_constraintmatrix(kx, ky, a, mesh.get_order() * nelex + 1, mesh.get_order() * neley + 1);
             
             //std::cout << "Constraint matrix" << std::endl;
             //std::cout << Q << std::endl;

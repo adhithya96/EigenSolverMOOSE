@@ -19,17 +19,18 @@ int main()
     {
         std::getline(file, line);
         std::stringstream s(line);
+        std::cout << line << std::endl;
         double temp1, temp2;
         s >> temp1 >> temp2;
         kfem.push_back(temp1);
         wfem.push_back(temp2);
     }
-
     
     plt::figure(); 
 
     plt::ylim(0, 6);
 
+    plt::scatter(kfem, wfem, {{"color", "red"}, {"label", "FEM"}});
 
     std::vector<double> ka, wa;
     double lambda = nu * E / ((1 + nu) * ( 1 - 2*  nu));
@@ -93,8 +94,6 @@ int main()
     }
 
     plt::plot(ka, wa, {{"color", "black"}, {"label", "analytical"}});
-    
-    plt::scatter(kfem, wfem, {{"color", "red"}, {"label", "FEM"}});
     
     plt::legend();
     plt::title("Dispersion diagram");
