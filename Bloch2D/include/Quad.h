@@ -5,8 +5,6 @@
 #include<string>
 #include<sstream>
 #include<cassert>
-#include "eigen-master/Eigen/Eigenvalues"
-#include "eigen-master/Eigen/Sparse"
 #include "eigen-master/Eigen/Eigen"
 #include "Material.h"
 
@@ -17,6 +15,7 @@ private:
     Eigen::MatrixXd node;
     Eigen::MatrixXd elem;
     Eigen::MatrixXd Ke, Me;
+    std::vector<int> cut_elem;
     
 public:
     Quad(){};
@@ -36,5 +35,7 @@ public:
     Eigen::MatrixXd get_localmass(double rho, Eigen::MatrixXd node);
     Eigen::MatrixXd get_constraintmatrix(double kx, double ky, double a, int nnodex, int nnodey);
     Eigen::MatrixXd get_jacobianmat(Eigen::MatrixXd x, double exi, double eta);
+    void add_cut_elements(int elem);
+    int  get_cut_elements(int pos);
 };
 

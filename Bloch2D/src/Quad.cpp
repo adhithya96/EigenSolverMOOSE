@@ -82,132 +82,6 @@ Quad::Quad(std::string file_name)
         std::cout << "Unable to open file " << std::endl;
 }
 
-Eigen::MatrixXd Quad::get_constraintmatrix(double kx, double ky, double a, int nnodex, int nnodey)
-{
-    Eigen::MatrixXd Q = Eigen::MatrixXd::Zero(4 * nnode, 4 * (nnodex - 1) * (nnodey  - 1));
-    int iter = 0, ndim = 2;
-
-    std::cout << "wave  number " << " " << "kx" << "  " << "ky" << std::endl;
-    std::cout << kx << "   " << ky << std::endl;
-    std::cout << "lattice length" << std::endl;
-    std::cout << a << std::endl;
-    int temp = 0;
-    for(int i =  0; i < nnodex; i++)
-    {
-        for(int j = 0; j < nnodey; j++)
-        {
-            if(j == nnodex - 1 && i != nnodey - 1) 
-            {
-                int xrur = ndim * (j + nnodex * i);
-                int yrur = ndim * ((nnodex - 1) * i);
-                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
-                int xrui = xrur +  ndim * nnodex * nnodey;
-
-                //std::cout << xrur << std::endl;
-                //std::cout << yrur << std::endl;
-                //std::cout << yiur << std::endl;
-                //std::cout << xrui << std::endl;
-
-                //ur
-                Q(xrur, yrur) = cos(kx * a);
-                Q(xrur, yiur) = -sin(kx * a);
-                //ui
-                Q(xrui, yrur) = sin(kx * a);            
-                Q(xrui, yiur) = cos(kx * a);
-                //vr
-                Q(xrur + 1,yrur + 1) = cos(kx * a);
-                Q(xrur + 1,yiur + 1) = -sin(kx * a);
-                //vi
-                Q(xrui + 1, yrur + 1) = sin(kx * a);            
-                Q(xrui + 1, yiur + 1) = cos(kx * a);
-
-                //std::cout << Q << std::endl;
-            }
-            else if (i == nnodey - 1  && j != nnodex - 1)
-            {
-                int xrur = ndim * (i * nnodex + j);
-                int yrur = ndim * j;
-                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
-                int xrui = xrur +  ndim * nnodex * nnodey;
-
-                //std::cout << xrur << std::endl;
-                //std::cout << yrur << std::endl;
-                //std::cout << yiur << std::endl;
-                //std::cout << xrui << std::endl;
-
-                //ur
-                Q(xrur, yrur) = cos(ky * a);
-                Q(xrur, yiur) = -sin(ky * a);
-                //ui
-                Q(xrui, yrur) = sin(ky * a);            
-                Q(xrui, yiur) = cos(ky * a);
-                //vr
-                Q(xrur + 1,yrur + 1) = cos(ky * a);
-                Q(xrur + 1,yiur + 1) = -sin(ky * a);
-                //vi
-                Q(xrui + 1, yrur + 1) = sin(ky * a);            
-                Q(xrui + 1, yiur + 1) = cos(ky * a);
-            }
-            else if(i == nnodey - 1 && j == nnodex - 1)
-            {
-                int xrur = ndim * (i * nnodex + j);
-                int yrur = 0;
-                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
-                int xrui = xrur +  ndim * nnodex * nnodey;
-
-                //std::cout << xrur << std::endl;
-                //std::cout << yrur << std::endl;
-                //std::cout << yiur << std::endl;
-                //std::cout << xrui << std::endl;
-
-                //ur
-                Q(xrur, yrur) = cos((kx + ky) * a);
-                Q(xrur, yiur) = -sin((kx + ky) * a);
-                //ui
-                Q(xrui, yrur) = sin((kx + ky) * a);            
-                Q(xrui, yiur) = cos((kx + ky) * a);
-                //vr
-                Q(xrur + 1,yrur + 1) = cos((kx + ky) * a);
-                Q(xrur + 1,yiur + 1) = -sin((kx + ky) * a);
-                //vi
-                Q(xrui + 1, yrur + 1) = sin((kx + ky) * a);            
-                Q(xrui + 1, yiur + 1) = cos((kx + ky) * a);
-
-                //std::cout << Q << std::endl;
-            
-            }
-            else
-            {
-                int xrur = ndim * (j + nnodey * i);
-                int yrur = ndim * temp;
-                //ur
-                Q(xrur, yrur) = 1;
-                //ui
-                int xiur = xrur + ndim * nnodex * nnodey;
-                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
-                Q(xiur, yiur) = 1;            
-                //vr
-                Q(xrur + 1, yrur + 1) = 1;
-                //vi
-                Q(xiur + 1, yiur + 1) = 1;
-                temp++;
-
-                //std::cout << xrur << std::endl;
-                //std::cout << yrur << std::endl;
-                //std::cout << yiur << std::endl;
-                //std::cout << xiur << std::endl;
-
-                //std::cout << Q << std::endl;
-
-            }
-
-
-        }
-    }
-
-    return Q;
-}
-
 int Quad::get_order()
 {
     return order;
@@ -295,6 +169,17 @@ double Quad::get_dNdx(int i, int j, double exi, double eta)
         return -99;
     }
 }
+
+void Quad::add_cut_elements(int elem)
+{
+    cut_elem.push_back(elem);
+}
+
+int  Quad::get_cut_elements(int pos)
+{
+    return cut_elem[pos];
+}
+
 
 Eigen::MatrixXd Quad::get_jacobianmat(Eigen::MatrixXd x, double exi, double eta)
 {
@@ -439,4 +324,130 @@ Eigen::MatrixXd Quad::get_localmass(double rho, Eigen::MatrixXd node)
     //std::cout  << me << std::endl;
 
     return rho * me;
+}
+
+Eigen::MatrixXd Quad::get_constraintmatrix(double kx, double ky, double a, int nnodex, int nnodey)
+{
+    Eigen::MatrixXd Q = Eigen::MatrixXd::Zero(4 * nnode, 4 * (nnodex - 1) * (nnodey  - 1));
+    int iter = 0, ndim = 2;
+
+    std::cout << "wave  number " << " " << "kx" << "  " << "ky" << std::endl;
+    std::cout << kx << "   " << ky << std::endl;
+    std::cout << "lattice length" << std::endl;
+    std::cout << a << std::endl;
+    int temp = 0;
+    for(int i =  0; i < nnodex; i++)
+    {
+        for(int j = 0; j < nnodey; j++)
+        {
+            if(j == nnodex - 1 && i != nnodey - 1) 
+            {
+                int xrur = ndim * (j + nnodex * i);
+                int yrur = ndim * ((nnodex - 1) * i);
+                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
+                int xrui = xrur +  ndim * nnodex * nnodey;
+
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
+
+                //ur
+                Q(xrur, yrur) = cos(kx * a);
+                Q(xrur, yiur) = -sin(kx * a);
+                //ui
+                Q(xrui, yrur) = sin(kx * a);            
+                Q(xrui, yiur) = cos(kx * a);
+                //vr
+                Q(xrur + 1,yrur + 1) = cos(kx * a);
+                Q(xrur + 1,yiur + 1) = -sin(kx * a);
+                //vi
+                Q(xrui + 1, yrur + 1) = sin(kx * a);            
+                Q(xrui + 1, yiur + 1) = cos(kx * a);
+
+                //std::cout << Q << std::endl;
+            }
+            else if (i == nnodey - 1  && j != nnodex - 1)
+            {
+                int xrur = ndim * (i * nnodex + j);
+                int yrur = ndim * j;
+                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
+                int xrui = xrur +  ndim * nnodex * nnodey;
+
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
+
+                //ur
+                Q(xrur, yrur) = cos(ky * a);
+                Q(xrur, yiur) = -sin(ky * a);
+                //ui
+                Q(xrui, yrur) = sin(ky * a);            
+                Q(xrui, yiur) = cos(ky * a);
+                //vr
+                Q(xrur + 1,yrur + 1) = cos(ky * a);
+                Q(xrur + 1,yiur + 1) = -sin(ky * a);
+                //vi
+                Q(xrui + 1, yrur + 1) = sin(ky * a);            
+                Q(xrui + 1, yiur + 1) = cos(ky * a);
+            }
+            else if(i == nnodey - 1 && j == nnodex - 1)
+            {
+                int xrur = ndim * (i * nnodex + j);
+                int yrur = 0;
+                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
+                int xrui = xrur +  ndim * nnodex * nnodey;
+
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xrui << std::endl;
+
+                //ur
+                Q(xrur, yrur) = cos((kx + ky) * a);
+                Q(xrur, yiur) = -sin((kx + ky) * a);
+                //ui
+                Q(xrui, yrur) = sin((kx + ky) * a);            
+                Q(xrui, yiur) = cos((kx + ky) * a);
+                //vr
+                Q(xrur + 1,yrur + 1) = cos((kx + ky) * a);
+                Q(xrur + 1,yiur + 1) = -sin((kx + ky) * a);
+                //vi
+                Q(xrui + 1, yrur + 1) = sin((kx + ky) * a);            
+                Q(xrui + 1, yiur + 1) = cos((kx + ky) * a);
+
+                //std::cout << Q << std::endl;
+            
+            }
+            else
+            {
+                int xrur = ndim * (j + nnodey * i);
+                int yrur = ndim * temp;
+                //ur
+                Q(xrur, yrur) = 1;
+                //ui
+                int xiur = xrur + ndim * nnodex * nnodey;
+                int yiur = yrur + ndim * (nnodex - 1) * (nnodey - 1);
+                Q(xiur, yiur) = 1;            
+                //vr
+                Q(xrur + 1, yrur + 1) = 1;
+                //vi
+                Q(xiur + 1, yiur + 1) = 1;
+                temp++;
+
+                //std::cout << xrur << std::endl;
+                //std::cout << yrur << std::endl;
+                //std::cout << yiur << std::endl;
+                //std::cout << xiur << std::endl;
+
+                //std::cout << Q << std::endl;
+
+            }
+
+
+        }
+    }
+
+    return Q;
 }

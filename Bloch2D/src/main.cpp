@@ -13,8 +13,8 @@ int main()
     
     //Get mesh data
     //Quad mesh = Quad("square_mesh_coarse.vtk");
-    int nelex =  4;
-    int neley = 4;
+    int nelex =  1;
+    int neley = 1;
     Quad5 mesh =  Quad5(nelex, neley, 0.04, 0.04);
     std::cout << "Nodal data" << std::endl;
     std::cout << mesh.get_nnode() << std::endl;
