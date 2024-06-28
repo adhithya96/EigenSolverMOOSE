@@ -2704,6 +2704,10 @@ CMakeFiles/PhononXFEM.dir/xfem/Levelset.cpp.o: ../xfem/Levelset.cpp
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Levelset.h
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Material.h
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad.h
+CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad2.h
+CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad3.h
+CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad4.h
+CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad5.h
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/Quad_hni.h
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/eigen-master/Eigen/Cholesky
 CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o: ../include/eigen-master/Eigen/Core

@@ -4,6 +4,27 @@
 //This includes all the nodal points in the isoparametric element.
 
 
+int Quad2::get_nen() 
+{
+    return nen;
+
+}
+
+int Quad2::get_nnode()
+{
+    return nnode;
+}
+    
+int Quad2::get_nelem()
+{
+    return nelem;
+}
+
+int Quad2::get_ndof()
+{
+    return ndof;
+}
+
 Eigen::VectorXd Quad2::get_coordinates(int nodenum)
 {
     Eigen::VectorXd coord(2);
@@ -117,27 +138,6 @@ Eigen::VectorXd Quad2::RefElementCoord(int nodenum)
     }
 
     return x;
-}
-
-int Quad2::get_nen() 
-{
-    return nen;
-
-}
-
-int Quad2::get_nnode()
-{
-    return nnode;
-}
-    
-int Quad2::get_nelem()
-{
-    return nelem;
-}
-
-int Quad2::get_ndof()
-{
-    return ndof;
 }
 
 int Quad2::get_ngp()

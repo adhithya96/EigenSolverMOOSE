@@ -77,6 +77,14 @@ Material.h
 /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Material.h
 Quad.h
 /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad.h
+Quad2.h
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad2.h
+Quad3.h
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad3.h
+Quad4.h
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad4.h
+Quad5.h
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad5.h
 gauss_points.h
 /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/gauss_points.h
 Levelset.h
@@ -2423,10 +2431,6 @@ Python.h
 -
 numpy/arrayobject.h
 -
-
-/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Quad_hni.cpp
-../include/Quad_hni.h
-/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/include/Quad_hni.h
 
 /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/main.cpp
 ../include/Quad_hni.h

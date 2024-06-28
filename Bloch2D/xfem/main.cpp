@@ -11,9 +11,10 @@
 
 int main()
 {
-    int nelex =  1;
-    int neley = 1;
-    Quad_hni mesh =  Quad_hni(nelex, neley, 1, 1);
+    const int nelex =  1;
+    const int neley = 1;
+    const int order = 1;
+    Quad_hni mesh =  Quad_hni(nelex, neley, 1, 1, order);
     std::cout << "Nodal data" << std::endl;
     std::cout << mesh.get_nnode() << std::endl;
     for(int i = 0; i < mesh.get_nnode(); i++)
@@ -62,7 +63,8 @@ int main()
 
         //find out the cut elements and parameterize the curves using splines
         int ans = ls.cut_element(x, &circle);
-
+        Eigen::MatrixXd klocal(mesh.get_nen() * 2, mesh.get_nen() * 2), mlocal(mesh.get_nen() * 2, mesh.get_nen() * 2);
+        //if element is cut
         if(ans == 1)
         {
             mesh.add_cut_elements(i);
@@ -113,23 +115,40 @@ int main()
             std::cout << area_param << std::endl;
             //Integrate using HNI
             //stiffness matrix
-            Eigen::MatrixXd kaffine(8, 8), kparam(8, 8);
+            Eigen::MatrixXd kaffine(mesh.get_nen() * 2, mesh.get_nen() * 2), kparam(mesh.get_nen() * 2, mesh.get_nen() * 2);
             kaffine = mesh.get_localstiffness(mat, x);
             kparam = mesh.get_localstiffness(mat, x, &ls, t0, t1, p0, p1, m0, m1);
             //mass matrix
-            Eigen::MatrixXd maffine(8, 8), mparam(8, 8);
+            Eigen::MatrixXd maffine(mesh.get_nen() * 2, mesh.get_nen() * 2), mparam(mesh.get_nen() * 2, mesh.get_nen() * 2);
             maffine = mesh.get_localmass(_mat.get_rho(), x);
             mparam = mesh.get_localmass(_mat.get_rho(), x, &ls, t0, t1, p0, p1, m0, m1);
-            //Assembly
-            
+            //local matrices
+            klocal = kaffine + kparam;
+            mlocal = maffine + mparam;
         }
+        //element is not cut
         else
         {
-
+            klocal = mesh.get_localstiffness(mat, x);
+            mlocal = mesh.get_localmass(_mat.get_rho(), x);
         }
         
         //Assembly
-
+        int nnode = mesh.get_nnode();
+        for(int j = 0; j < ele.size(); j++)
+            for(int k = 0; k < ele.size(); k++)
+                for(int l = 0; l < 2; l++)
+                    for(int m = 0; m < 2; m++)
+                    {
+                        //Kreal
+                        K.coeffRef(2 * ele(j) + l, 2 * ele(k) + m) += klocal(l + j * 2, m + k * 2);
+                        //Mreal
+                        M.coeffRef(2 * ele(j) + l, 2 * ele(k) + m) += mlocal(l + j * 2, m + k  * 2);
+                        //Kimag
+                        K.coeffRef(2 * ele(j) + l + nnode * 2, 2 * ele(k) + m + nnode * 2) += klocal(l + j * 2, m + k * 2);
+                        //Mimag
+                        M.coeffRef(2 * ele(j) + l + nnode * 2, 2 * ele(k) + m + nnode * 2) += mlocal(l + j * 2, m + k * 2);
+                    }           
     }
     
     std::cout << "Assembly complete" << std::endl;
