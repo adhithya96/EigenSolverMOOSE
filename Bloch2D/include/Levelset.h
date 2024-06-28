@@ -1,6 +1,7 @@
 #pragma once
-#include "Circle.h"
+
 #include "eigen-master/Eigen/Eigen"
+#include "gauss_points.h"
 #include <iostream>
 
 class Levelset
@@ -14,9 +15,15 @@ public:
     std::vector<double> get_p1(int pos);
     std::vector<double> get_t0(int pos);
     std::vector<double> get_t1(int pos);
+    double get_m1(int pos);
+    double get_m0(int pos);
     Levelset();
-    Eigen::VectorXd c(double t, int pos);
-    Eigen::VectorXd dcdt(double t, int pos);
+    Eigen::VectorXd c(double t, std::vector<double> t0, std::vector<double> t1, 
+                            std::vector<double> p0, std::vector<double> p1, double m0, double m1);
+    Eigen::VectorXd dcdt(double t, std::vector<double> t0, std::vector<double> t1, 
+                            std::vector<double> p0, std::vector<double> p1, double m0, double m1);
+    Eigen::VectorXd dcxdm(double t, std::vector<double> t0, std::vector<double> t1);
+    Eigen::VectorXd dcydm(double t, std::vector<double> t0, std::vector<double> t1);
     template <typename T>
     int cut_element(Eigen::MatrixXd node, T *geom);
     // Find p0, p1, t0, t1
@@ -29,7 +36,8 @@ public:
     double bisection(int dir, T *geom, std::vector<double> node1, std::vector<double> node2);
     double norm(Eigen::VectorXd vec);
     double evaluate_area_affine(Eigen::MatrixXd node);
-    double evaluate_area_parametric(int pos);
+    double evaluate_area_parametric(std::vector<double> t0, std::vector<double> t1, 
+                            std::vector<double> p0, std::vector<double> p1, double m0, double m1);
 };
 
 template <typename T>
@@ -49,22 +57,36 @@ void Levelset::find_tangent_mag(std::vector<double> p0, std::vector<double> p1, 
     int iter = 0;
     do
     {
-        Eigen::VectorXd dfdm = geom->dfdm(t0, t1, m);
-        Eigen::MatrixXd ddfdm = geom->ddfdm(t0, t1);
+        Eigen::VectorXd dfdm(2);
+        Eigen::MatrixXd ddfdm(2, 2);
+        
+        dfdm = geom->dfdm(t0, t1, m, p0, p1);
+        ddfdm = geom->ddfdm(t0, t1, m, p0, p1);
 
-        assert(ddfdm.determinant() > 0);
+        //assert(ddfdm.determinant() > 0);
         m -= ddfdm.inverse() * dfdm;
 
         std::cout << m << std::endl;
-        std::cout << norm(geom->dfdm(t0, t1, m)) << std::endl; 
+        std::cout << norm(dfdm) << std::endl; 
         iter++;
-    } while ((norm(geom->dfdm(t0, t1, m)) > pow(10, -6)) && (iter < 10));
+    } while ((norm(geom->dfdm(t0, t1, m, p0, p1)) > pow(10, -3)) && (iter < 100));
 
-    assert(norm(geom->dfdm(t0, t1, m)) < pow(10, -6));
+    assert(norm(geom->dfdm(t0, t1, m, p0, p1)) < pow(10, -3));
 
     this->m0.push_back(m(0));
     this->m1.push_back(m(1));
 }
+
+// template <typename T>
+// Eigen::VectorXd Levelset::dfdm(int pos, T* geom)
+// {
+//     std::vector<double> t0 = t0[pos];
+//     std::vector<double> t1 = t1[pos];
+//     std::vector<double> p0 = p0[pos];
+//     std::vector<double> p1 = p1[pos];
+
+//     Eigen::VectorXd c = c()
+// }
 
 template <typename T>
 double Levelset::bisection(int dir, T *geom, std::vector<double> node1, std::vector<double> node2)
@@ -122,7 +144,7 @@ void Levelset::find_intersection(Eigen::MatrixXd node, T *geom)
         double dphi[2];
         dphi[0] = geom->dphidx(temp[0], temp[1]);
         dphi[1] = geom->dphidy(temp[0], temp[1]);
-        this->t0.push_back({dphi[1], -dphi[0]});
+        this->t0.push_back({-dphi[1], dphi[0]});
     }
     if (phii(2) * phii(3) < 0)
     {
@@ -136,12 +158,12 @@ void Levelset::find_intersection(Eigen::MatrixXd node, T *geom)
         if (iter == 0)
         {
             this->p0.push_back({temp[0], temp[1]});
-            this->t0.push_back({dphi[1], -dphi[0]});
+            this->t0.push_back({-dphi[1], dphi[0]});
         }
         else
         {
             this->p1.push_back({temp[0], temp[1]});
-            this->t1.push_back({dphi[1], -dphi[0]});
+            this->t1.push_back({-dphi[1], dphi[0]});
         }
     }
     if (phii(1) * phii(2) < 0)
@@ -156,12 +178,12 @@ void Levelset::find_intersection(Eigen::MatrixXd node, T *geom)
         if (iter == 0)
         {
             this->p0.push_back({temp[0], temp[1]});
-            this->t0.push_back({dphi[1], -dphi[0]});
+            this->t0.push_back({-dphi[1], dphi[0]});
         }
         else
         {
             this->p1.push_back({temp[0], temp[1]});
-            this->t1.push_back({dphi[1], -dphi[0]});
+            this->t1.push_back({-dphi[1], dphi[0]});
         }
     }
     if (phii(0) * phii(3) < 0)
@@ -176,12 +198,12 @@ void Levelset::find_intersection(Eigen::MatrixXd node, T *geom)
         if (iter == 0)
         {
             this->p0.push_back({temp[0], temp[1]});
-            this->t0.push_back({dphi[1], -dphi[0]});
+            this->t0.push_back({-dphi[1], dphi[0]});
         }
         else
         {
             this->p1.push_back({temp[0], temp[1]});
-            this->t1.push_back({dphi[1], -dphi[0]});
+            this->t1.push_back({-dphi[1], dphi[0]});
         }
     }
 }

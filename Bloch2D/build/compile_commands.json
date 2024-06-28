@@ -1,0 +1,57 @@
+[
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/xfem/main.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/main.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/main.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/xfem/Circle.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Circle.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Circle.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/xfem/Levelset.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Levelset.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Levelset.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/xfem/Quad_hni.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Quad_hni.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/xfem/Quad_hni.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Quad.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Material.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Material.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Material.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Quad2.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad2.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad2.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Quad3.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad3.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad3.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Quad4.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad4.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad4.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PhononXFEM.dir/src/Quad5.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad5.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/Quad5.cpp"
+},
+{
+  "directory": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+  "command": "/usr/bin/c++   -I/usr/include/python3.8  -g   -o CMakeFiles/PlotDispersion.dir/src/plot.cpp.o -c /home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/plot.cpp",
+  "file": "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/src/plot.cpp"
+}
+]
