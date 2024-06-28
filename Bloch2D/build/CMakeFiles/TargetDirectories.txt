@@ -1,0 +1,4 @@
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build/CMakeFiles/rebuild_cache.dir
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build/CMakeFiles/edit_cache.dir
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build/CMakeFiles/PhononXFEM.dir
+/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build/CMakeFiles/PlotDispersion.dir

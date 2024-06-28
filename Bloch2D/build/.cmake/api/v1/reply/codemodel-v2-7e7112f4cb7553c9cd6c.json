@@ -1,0 +1,68 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.7"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PhononXFEM",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "PhononXFEM::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PhononXFEM-Debug-bb3cc574cda8bdbedf30.json",
+					"name" : "PhononXFEM",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "PlotDispersion::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PlotDispersion-Debug-07d7447776bd2cf06d68.json",
+					"name" : "PlotDispersion",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D/build",
+		"source" : "/home/adhithyar/Documents/Project/EigenCpp/Bloch2D"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

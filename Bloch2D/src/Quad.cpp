@@ -170,17 +170,6 @@ double Quad::get_dNdx(int i, int j, double exi, double eta)
     }
 }
 
-void Quad::add_cut_elements(int elem)
-{
-    cut_elem.push_back(elem);
-}
-
-int  Quad::get_cut_elements(int pos)
-{
-    return cut_elem[pos];
-}
-
-
 Eigen::MatrixXd Quad::get_jacobianmat(Eigen::MatrixXd x, double exi, double eta)
 {
 

@@ -264,7 +264,6 @@ double Quad3::get_N(int i, double exi, double eta)
     //Get the reference  coordinates
     Eigen::VectorXd x = RefElementCoord(i);
 
-
     Eigen::VectorXd  refx(4);
     refx << -1,-0.4472,0.4472,1;
     Eigen::VectorXd refy(4); 
